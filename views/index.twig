@@ -1,0 +1,75 @@
+{% extends 'concern/layout.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                {{ title }}
+            </h1>
+            <p class="subtitle">
+                {{ description }}
+            </p>
+        </div>
+    </section>
+    <div class="columns">
+        {% if books %}
+            {% for book in books %}
+                <section class="column">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-64x64">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ book.title }}</strong>
+                                        <small>@{{ book.author }}</small>
+                                        <small>stock {{ book.stock }}</small>
+                                        ,
+                                        <small>isbn: {{ book.isbn }}</small>
+                                    </p>
+                                    <p>Buy this book with only ${{ book.price }}</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            {% endfor %}
+        {% else %}
+            <section class="column">
+                <div class="box">
+                    <article class="media">
+                        <div class="media-content"><p>No content</p></div>
+                    </article>
+                </div>
+            </section>
+        {% endif %}
+    </div>
+
+    <nav class="pagination" role="navigation" aria-label="pagination">
+        <a class="pagination-previous"
+           href="?offset={{ currentPage-1 }}"
+                {{ currentPage<2 ? 'disabled' : '' }}>Previous</a>
+        <a class="pagination-next"
+                {{ currentPage>=totalPage ? 'disabled' : '' }}
+           href="?offset={{ currentPage+1 }}">
+            Next page
+        </a>
+        <ul class="pagination-list">
+            {% for page in pages %}
+                <li>
+                    <a href="?offset={{ page }}"
+                       class="pagination-link {{ page == currentPage ? 'is-current':'' }}">
+                        {{ page }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}
