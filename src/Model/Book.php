@@ -84,4 +84,9 @@ class Book
     {
         $this->author = $author;
     }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

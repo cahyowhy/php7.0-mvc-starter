@@ -24,10 +24,12 @@ class BookRepository extends BaseRepository
     public function find(Book $book): array
     {
         $query = 'SELECT * FROM book ';
-        if (!empty($book->getId())) {
+        $id = !empty($book->getId());
+        $isbn = !empty($book->getIsbn());
+
+        if ($id || $isbn) {
             // https://stackoverflow.com/questions/5673269/what-is-the-advantage-of-using-heredoc-in-php
-            $query = <<<SQL
-SELECT book.*,
+            $query = 'SELECT book.*,
 customer.id AS cust_id,
 customer.firstname AS cust_name,
 customer.email AS cust_email
@@ -35,14 +37,17 @@ FROM book
 LEFT JOIN borrowed_books
 ON book.id = borrowed_books.book_id
 LEFT JOIN customer
-ON customer.id = borrowed_books.customer_id WHERE book.id = :id 
-SQL;
+ON customer.id = borrowed_books.customer_id ';
+        }
+
+        if ($id) {
+            $query = $query . 'WHERE book.id = :id';
             $rows = $this->db->prepare($query);
             $rows->bindParam('id', $book->getId());
             $rows->execute();
 
             return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
-        } else if (!empty($book->getIsbn())) {
+        } else if ($isbn) {
             $query = $query . 'WHERE isbn = :isbn';
 
             $rows = $this->db->prepare($query);
@@ -68,15 +73,16 @@ SQL;
                     $rows->bindParam('author', $param);
                 }
 
-
                 if ($title) {
                     $param = '%' . $book->getTitle() . '% ';
-                    $rows->bindParam('title');
+                    $rows->bindParam('title', $param);
                 }
 
                 $rows->execute();
                 return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
             }
+
+            return [];
         }
     }
 
