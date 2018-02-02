@@ -1,6 +1,16 @@
 {
+  "book/:id": {
+    "controller": "Book",
+    "method": "show",
+    "params": {
+      "id": "number"
+    }
+  },
   "": {
     "controller": "Home",
-    "method": "index"
+    "method": "index",
+    "params": {
+      "offset": "number"
+    }
   }
 }

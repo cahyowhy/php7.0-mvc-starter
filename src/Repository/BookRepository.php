@@ -2,6 +2,7 @@
 
 namespace Bookstore\Repository;
 
+use Bookstore\Model\Book;
 use PDO;
 
 class BookRepository extends BaseRepository
@@ -18,6 +19,65 @@ class BookRepository extends BaseRepository
         $rows->execute();
 
         return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+    }
+
+    public function find(Book $book): array
+    {
+        $query = 'SELECT * FROM book ';
+        if (!empty($book->getId())) {
+            // https://stackoverflow.com/questions/5673269/what-is-the-advantage-of-using-heredoc-in-php
+            $query = <<<SQL
+SELECT book.*,
+customer.id AS cust_id,
+customer.firstname AS cust_name,
+customer.email AS cust_email
+FROM book
+LEFT JOIN borrowed_books
+ON book.id = borrowed_books.book_id
+LEFT JOIN customer
+ON customer.id = borrowed_books.customer_id WHERE book.id = :id 
+SQL;
+            $rows = $this->db->prepare($query);
+            $rows->bindParam('id', $book->getId());
+            $rows->execute();
+
+            return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+        } else if (!empty($book->getIsbn())) {
+            $query = $query . 'WHERE isbn = :isbn';
+
+            $rows = $this->db->prepare($query);
+            $rows->bindParam('id', $book->getId());
+            $rows->execute();
+
+            return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+        } else {
+            $author = !empty($book->getAuthor());
+            $title = !empty($book->getTitle());
+            if ($author || $title) {
+                $query = $query . ' WHERE 1=1 ';
+                if ($author)
+                    $query = $query . 'AND author LIKE :author ';
+
+                if ($title)
+                    $query = $query . 'AND title LIKE :title ';
+
+                $rows = $this->db->prepare($query);
+
+                if ($author) {
+                    $param = '%' . $book->getAuthor() . '% ';
+                    $rows->bindParam('author', $param);
+                }
+
+
+                if ($title) {
+                    $param = '%' . $book->getTitle() . '% ';
+                    $rows->bindParam('title');
+                }
+
+                $rows->execute();
+                return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+            }
+        }
     }
 
     public function count(): int
