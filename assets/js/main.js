@@ -1,8 +1,11 @@
 import BookItem from './components/BookItem';
+import SearchBookWidget from './components/SearchBookWidget';
+
 var Turbolinks = require('turbolinks');
 window.Vue = require('vue').default;
 
 Vue.component('book-item', BookItem);
+Vue.component('search-book-widget', SearchBookWidget);
 Vue.mixin(require('./mixins/vue-turbolinks'));
 
 let el = '#app';

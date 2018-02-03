@@ -16,10 +16,7 @@ class BookController extends AbstractController
         $bookRepository = new BookRepository($this->db);
         $book = $bookRepository->find($bookParam);
 
-        if (empty($book)) {
-            $properties = ['errorMessage' => '404'];
-            return $this->render('error.twig', $properties);
-        }
+        if (empty($book)) $this->renderErr();
 
         $bookProperty = $book[0];
         if (!empty($bookProperty->cust_id)) {
@@ -37,5 +34,36 @@ class BookController extends AbstractController
 
         $properties = ['book' => $bookProperty];
         return $this->render('book.twig', $properties);
+    }
+
+    public function search(): string
+    {
+        // isbn, title, author
+        $isbn = $this->request->getParams()->getString('isbn');
+        $title = $this->request->getParams()->getString('title');
+        $author = $this->request->getParams()->getString('author');
+
+        $bookParam = new Book();
+        $bookParam->setIsbn($isbn);
+        $bookParam->setTitle($title);
+        $bookParam->setAuthor($author);
+
+        $bookRepository = new BookRepository($this->db);
+        $book = $bookRepository->find($bookParam);
+
+        if (empty($book)) $this->renderErr();
+
+        $properties = [
+            'books' => $book,
+            'title' => 'result',
+            'description' => 'result for search'
+        ];
+        return $this->render('search.twig', $properties);
+    }
+
+    private function renderErr()
+    {
+        $properties = ['errorMessage' => '404'];
+        return $this->render('error.twig', $properties);
     }
 }

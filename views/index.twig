@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="index-page">
     <section class="section">
         <div class="container">
             <h1 class="title">
@@ -14,6 +15,7 @@
             </p>
         </div>
     </section>
+    <search-book-widget></search-book-widget>
     <div class="columns">
         {% if books %}
             {% for book in books %}
@@ -33,7 +35,6 @@
             </section>
         {% endif %}
     </div>
-
     <nav class="pagination" role="navigation" aria-label="pagination">
         <a class="pagination-previous"
            data-turbolinks-action="replace"
@@ -57,4 +58,5 @@
             {% endfor %}
         </ul>
     </nav>
+</div>
 {% endblock %}

@@ -38,7 +38,6 @@ class HomeController extends AbstractController
             array_push($pages, $index);
         }
 
-//        var_dump(json_encode($books[0]->jsonSerialize()));
         $properties = [
             'totalPage' => $totalPage,
             'currentPage' => $current_page,

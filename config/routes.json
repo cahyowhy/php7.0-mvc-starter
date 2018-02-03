@@ -6,11 +6,12 @@
       "id": "number"
     }
   },
+  "search/book": {
+    "controller": "Book",
+    "method": "search"
+  },
   "": {
     "controller": "Home",
-    "method": "index",
-    "params": {
-      "offset": "number"
-    }
+    "method": "index"
   }
 }

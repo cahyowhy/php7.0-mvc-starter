@@ -51,7 +51,7 @@ ON customer.id = borrowed_books.customer_id ';
             $query = $query . 'WHERE isbn = :isbn';
 
             $rows = $this->db->prepare($query);
-            $rows->bindParam('id', $book->getId());
+            $rows->bindParam('isbn', $book->getIsbn());
             $rows->execute();
 
             return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
@@ -59,7 +59,7 @@ ON customer.id = borrowed_books.customer_id ';
             $author = !empty($book->getAuthor());
             $title = !empty($book->getTitle());
             if ($author || $title) {
-                $query = $query . ' WHERE 1=1 ';
+                $query = $query . 'WHERE 1=1 ';
                 if ($author)
                     $query = $query . 'AND author LIKE :author ';
 
@@ -69,12 +69,12 @@ ON customer.id = borrowed_books.customer_id ';
                 $rows = $this->db->prepare($query);
 
                 if ($author) {
-                    $param = '%' . $book->getAuthor() . '% ';
+                    $param = "%" . $book->getAuthor() . "%";
                     $rows->bindParam('author', $param);
                 }
 
                 if ($title) {
-                    $param = '%' . $book->getTitle() . '% ';
+                    $param = "%" . $book->getTitle() . "%";
                     $rows->bindParam('title', $param);
                 }
 

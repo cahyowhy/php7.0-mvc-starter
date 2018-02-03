@@ -1,0 +1,38 @@
+{% extends 'concern/layout.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    <div class="search-page">
+        <section class="section">
+            <div class="container">
+                <h1 class="title">
+                    {{ title }}
+                </h1>
+                <p class="subtitle">
+                    {{ description }}
+                </p>
+            </div>
+        </section>
+        <div class="columns">
+            {% if books %}
+                {% for book in books %}
+                    <section class="column">
+                        <div class="box">
+                            <book-item :book="{{ book.jsonSerialize()|json_encode() }}"></book-item>
+                        </div>
+                    </section>
+                {% endfor %}
+            {% else %}
+                <section class="column">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content"><p>No content</p></div>
+                        </article>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
