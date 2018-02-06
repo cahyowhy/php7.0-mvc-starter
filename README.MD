@@ -1,0 +1,1 @@
+how to use it..? execute the dump.sql, install this composer & npm package then serve this project with apache2. Min requirements php7.0

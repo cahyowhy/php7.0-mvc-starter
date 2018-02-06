@@ -11,6 +11,7 @@ class Request {
     private $method;
     private $params;
     private $cookies;
+    private $body;
 
     public function __construct() {
         $this->domain = $_SERVER['HTTP_HOST'];
@@ -18,6 +19,12 @@ class Request {
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->params = new FilteredMap(array_merge($_POST, $_GET));
         $this->cookies = new FilteredMap($_COOKIE);
+        $this->body = @file_get_contents('php://input');
+    }
+
+    public function getBody(): string
+    {
+        return $this->body;
     }
 
     public function getUrl(): string {

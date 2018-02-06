@@ -95,4 +95,26 @@ ON customer.id = borrowed_books.customer_id ';
 
         return $results['total'];
     }
+
+    public function create(Book $book): int
+    {
+        $query = 'INSERT INTO book (title, isbn, author, stock, price)
+VALUES (:title, :isbn, :author, :stock, :price);';
+
+        $sth = $this->db->prepare($query);
+
+        // https://stackoverflow.com/questions/1179874/what-is-the-difference-between-bindparam-and-bindvalue
+        $sth->bindValue('title', $book->getTitle());
+        $sth->bindValue('author', $book->getAuthor());
+        $sth->bindValue('price', $book->getPrice());
+        $sth->bindValue('stock', $book->getStock());
+        $sth->bindValue('isbn', $book->getIsbn());
+
+        if (!$sth->execute()) {
+            $this->db->rollBack();
+            throw new DbException($sth->errorInfo()[2]);
+        }
+
+        return $this->db->lastInsertId();
+    }
 }

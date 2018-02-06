@@ -1,0 +1,14 @@
+{% extends 'admin/concern/auth.twig' %}
+    {% block title %}Admin register{% endblock %}
+    {% block head_title %}
+        <h3 class="title has-text-grey">Register</h3>
+        <p class="subtitle has-text-grey">Please register to proceed.</p>
+    {% endblock %}
+    {% block form %}
+        <admin-register/>
+    {% endblock %}
+    {% block btn_foot %}
+        <a href="/">Login</a> &nbsp;·&nbsp;
+        <a href="/">Forgot Password</a> &nbsp;·&nbsp;
+        <a href="/">Need Help?</a>
+    {% endblock %}

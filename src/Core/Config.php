@@ -4,15 +4,18 @@ namespace Bookstore\Core;
 
 use Bookstore\Exceptions\NotFoundException;
 
-class Config {
+class Config
+{
     private $data;
 
-    public function __construct() {
-        $json = file_get_contents(__DIR__ . '/../../config/app.json');
-        $this->data = json_decode($json, true);
+    public function __construct()
+    {
+        $jsonData = file_get_contents(__DIR__ . '/../../config/app.json');
+        $this->data = json_decode($jsonData, true);
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         if (!isset($this->data[$key])) {
             throw new NotFoundException("Key $key not in config.");
         }

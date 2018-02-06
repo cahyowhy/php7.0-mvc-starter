@@ -1,11 +1,23 @@
+// compoenents
 import BookItem from './components/BookItem';
 import SearchBookWidget from './components/SearchBookWidget';
+import AddBookWidget from './components/AddBookWidget';
+import AdminAuthForm from './components/AdminAuthForm';
+
+// partial-pages
+import AdminRegister from './partial-pages/AdminRegister';
+import AdminLogin from './partial-pages/AdminLogin';
 
 var Turbolinks = require('turbolinks');
 window.Vue = require('vue').default;
 
 Vue.component('book-item', BookItem);
 Vue.component('search-book-widget', SearchBookWidget);
+Vue.component('add-book-widget', AddBookWidget);
+Vue.component('admin-auth-form', AdminAuthForm);
+
+Vue.component('admin-register', AdminRegister);
+Vue.component('admin-login', AdminLogin);
 Vue.mixin(require('./mixins/vue-turbolinks'));
 
 let el = '#app';

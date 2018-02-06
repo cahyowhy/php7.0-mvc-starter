@@ -6,9 +6,33 @@
       "id": "number"
     }
   },
+  "admin": {
+    "controller": "Admin",
+    "method": "index"
+  },
+  "admin/login": {
+    "controller": "Admin",
+    "method": "doLogin"
+  },
+  "admin/create":{
+    "controller": "Admin",
+    "method": "create"
+  },
+  "admin/validate":{
+    "controller": "Admin",
+    "method": "validate"
+  },
+  "admin/register":{
+    "controller": "Admin",
+    "method": "doRegister"
+  },
   "search/book": {
     "controller": "Book",
     "method": "search"
+  },
+  "add/book": {
+    "controller": "Book",
+    "method": "create"
   },
   "": {
     "controller": "Home",

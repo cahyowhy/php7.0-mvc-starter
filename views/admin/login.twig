@@ -1,0 +1,14 @@
+{% extends 'admin/concern/auth.twig' %}
+    {% block title %}Admin Login{% endblock %}
+    {% block head_title %}
+        <h3 class="title has-text-grey">Login</h3>
+        <p class="subtitle has-text-grey">Please login to proceed.</p>
+    {% endblock %}
+    {% block form %}
+        <admin-login/>
+    {% endblock %}
+    {% block btn_foot %}
+        <a href="../">Sign Up</a> &nbsp;·&nbsp;
+        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+        <a href="../">Need Help?</a>
+    {% endblock %}

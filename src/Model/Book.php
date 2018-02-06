@@ -85,6 +85,16 @@ class Book
         $this->author = $author;
     }
 
+    public function setStock(int $stock)
+    {
+        $this->stock = $stock;
+    }
+
+    public function setPrice(float $price)
+    {
+        $this->price = $price;
+    }
+
     public function jsonSerialize()
     {
         return get_object_vars($this);

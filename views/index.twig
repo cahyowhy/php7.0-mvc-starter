@@ -4,59 +4,67 @@
 {% endblock %}
 
 {% block content %}
-<div class="index-page">
-    <section class="section">
-        <div class="container">
-            <h1 class="title">
-                {{ title }}
-            </h1>
-            <p class="subtitle">
-                {{ description }}
-            </p>
-        </div>
-    </section>
-    <search-book-widget></search-book-widget>
-    <div class="columns">
-        {% if books %}
-            {% for book in books %}
+    <div class="index-page">
+        <section class="section">
+            <div class="container">
+                <h1 class="title">
+                    {{ title }}
+                </h1>
+                <p class="subtitle">
+                    {{ description }}
+                </p>
+            </div>
+        </section>
+        {% if hasLogin %}
+            <add-book-widget></add-book-widget>
+        {% else %}
+            <div class="notification is-info">
+                <button class="delete"></button>
+                <strong>Masuk sebagai admin </strong> terlebih dahulu untuk menambah data buku
+            </div>
+        {% endif %}
+        <search-book-widget></search-book-widget>
+        <div class="columns">
+            {% if books %}
+                {% for book in books %}
+                    <section class="column">
+                        <div class="box">
+                            <book-item :book="{{ book.jsonSerialize()|json_encode() }}"></book-item>
+                        </div>
+                    </section>
+                {% endfor %}
+            {% else %}
                 <section class="column">
                     <div class="box">
-                        <book-item :book="{{ book.jsonSerialize()|json_encode() }}"></book-item>
+                        <article class="media">
+                            <div class="media-content"><p>No content</p></div>
+                        </article>
                     </div>
                 </section>
-            {% endfor %}
-        {% else %}
-            <section class="column">
-                <div class="box">
-                    <article class="media">
-                        <div class="media-content"><p>No content</p></div>
-                    </article>
-                </div>
-            </section>
-        {% endif %}
+            {% endif %}
+        </div>
+        <nav class="pagination" role="navigation" aria-label="pagination">
+            <a class="pagination-previous"
+               data-turbolinks-action="replace"
+               href="?offset={{ currentPage-1 }}"
+                    {{ currentPage<2 ? 'disabled' : '' }}>Previous</a>
+            <a class="pagination-next"
+               data-turbolinks-action="replace"
+                    {{ currentPage>=totalPage ? 'disabled' : '' }}
+               href="?offset={{ currentPage+1 }}">
+                Next page
+            </a>
+            <ul class="pagination-list">
+                {% for page in pages %}
+                    <li>
+                        <a href="?offset={{ page }}"
+                           data-turbolinks-action="replace"
+                           class="pagination-link {{ page == currentPage ? 'is-current':'' }}">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
     </div>
-    <nav class="pagination" role="navigation" aria-label="pagination">
-        <a class="pagination-previous"
-           data-turbolinks-action="replace"
-           href="?offset={{ currentPage-1 }}"
-                {{ currentPage<2 ? 'disabled' : '' }}>Previous</a>
-        <a class="pagination-next"
-           data-turbolinks-action="replace"
-                {{ currentPage>=totalPage ? 'disabled' : '' }}
-           href="?offset={{ currentPage+1 }}">
-            Next page
-        </a>
-        <ul class="pagination-list">
-            {% for page in pages %}
-                <li>
-                    <a href="?offset={{ page }}"
-                       data-turbolinks-action="replace"
-                       class="pagination-link {{ page == currentPage ? 'is-current':'' }}">
-                        {{ page }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </nav>
-</div>
 {% endblock %}
