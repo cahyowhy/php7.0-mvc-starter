@@ -8,24 +8,25 @@
 
 namespace Bookstore\Repository;
 
-
+use Bookstore\Exceptions\DbException;
 use Bookstore\Exceptions\InvalidIdException;
+use Bookstore\Exceptions\NotFoundException;
 use Bookstore\Model\Admin;
-use Bookstore\Utils\JWT;
+use JWT;
 use PDO;
 
 class AdminRepository extends BaseRepository
 {
     const CLASSNAME = '\Bookstore\Model\Admin';
 
-    public static function genereateToken(Admin $admin): array
-    {
-        $tokenParam = ['username' => $admin->getUsername(),
-            'password' => $admin->getPassword()];
+    use \GenerateToken;
 
-        return ['token' => JWT::encode($tokenParam, $_ENV['JWT_KEY'])];
-    }
-
+    /**
+     * @param Admin $admin
+     * @return array
+     * @throws DbException
+     * @throws \Bookstore\Exceptions\InvalidIdException
+     */
     public function create(Admin $admin): array
     {
         $query = 'INSERT INTO admin (username, password) VALUES (:username, :password)';
@@ -46,20 +47,29 @@ class AdminRepository extends BaseRepository
         if (empty($id))
             throw new InvalidIdException('id empty');
 
-        return self::genereateToken($admin);
+        return self::generateToken(false, $admin);
     }
 
 
+    /**
+     * @param Admin $admin
+     * @return array
+     * @throws NotFoundException
+     */
     public function validate(Admin $admin): array
     {
         $admin = $this->find($admin);
         if (empty($admin) && !is_array($admin))
-            throw new InvalidIdException('username or password wrong');
+            throw new NotFoundException('username or password wrong');
 
         $admin = $admin[0];
-        return self::genereateToken($admin);
+        return self::generateToken(false, $admin);
     }
 
+    /**
+     * @param Admin $admin
+     * @return array
+     */
     public function find(Admin $admin): array
     {
         $query = 'SELECT * FROM admin ';

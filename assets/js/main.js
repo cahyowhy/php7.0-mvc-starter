@@ -7,6 +7,8 @@ import AdminAuthForm from './components/AdminAuthForm';
 // partial-pages
 import AdminRegister from './partial-pages/AdminRegister';
 import AdminLogin from './partial-pages/AdminLogin';
+import CustomerRegister from './partial-pages/CustomerRegister';
+import CustomerLogin from './partial-pages/CustomerLogin';
 
 var Turbolinks = require('turbolinks');
 window.Vue = require('vue').default;
@@ -18,6 +20,8 @@ Vue.component('admin-auth-form', AdminAuthForm);
 
 Vue.component('admin-register', AdminRegister);
 Vue.component('admin-login', AdminLogin);
+Vue.component('customer-register', CustomerRegister);
+Vue.component('customer-login', CustomerLogin);
 Vue.mixin(require('./mixins/vue-turbolinks'));
 
 let el = '#app';

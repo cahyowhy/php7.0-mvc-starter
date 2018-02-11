@@ -50,7 +50,7 @@ class Router {
         array $info,
         Request $request
     ): string {
-        $controllerName = '\Bookstore\Controllers\\' . $info['controller'] . 'Controller';
+        $controllerName = '\Bookstore\Controllers\\'.$info['concern'].'\\' . $info['controller'] . 'Controller';
         $controller = new $controllerName($this->di, $request);
 
         /*if (isset($info['login']) && $info['login']) {

@@ -1,15 +1,18 @@
 <?php
 
-namespace Bookstore\Controllers;
+namespace Bookstore\Controllers\WEB;
 
-
-use Bookstore\Exceptions\InvalidIdException;
+use Bookstore\Controllers\AbstractController;
 use Bookstore\Model\Book;
 use Bookstore\Model\Customer;
 use Bookstore\Repository\BookRepository;
 
 class BookController extends AbstractController
 {
+    /**
+     * @param int $bookId
+     * @return string
+     */
     public function show(int $bookId): string
     {
         $bookParam = new Book();
@@ -35,48 +38,12 @@ class BookController extends AbstractController
         }
 
         $properties = ['book' => $bookProperty];
-        return $this->render('book.twig', $properties);
+        return $this->render('book/book.twig', $properties);
     }
 
-    public function create()
-    {
-        header('Content-type: application/json');
-
-        $bookBody = json_decode($this->request->getBody(), true);
-        $title = $bookBody['title'];
-        $author = $bookBody['author'];
-        $price = $bookBody['price'];
-        $stock = $bookBody['stock'];
-        $isbn = $bookBody['isbn'];
-
-        if (empty($title) || empty($author) || empty($price) || empty($stock) || empty($isbn)) {
-            throw new InvalidIdException('some val are empty');
-        }
-
-        $book = new Book();
-        $book->setTitle($title);
-        $book->setAuthor($author);
-        $book->setPrice($price);
-        $book->setStock($stock);
-        $book->setIsbn($isbn);
-
-        $bookRepository = new BookRepository($this->db);
-        $bookId = $bookRepository->create($book);
-        if (empty($bookId))
-            $this->renderErr();
-
-        $book->setId($bookId);
-        $bookResult = $bookRepository->find($book);
-        $bookResult = $bookResult[0];
-
-        if (empty($bookId)) {
-            throw new InvalidIdException('result is error');
-            return json_encode(["message" => "result empty"]);
-        }
-
-        return json_encode($bookResult->jsonSerialize());
-    }
-
+    /**
+     * @return string
+     */
     public function search(): string
     {
         $isbn = $this->request->getParams()->getString('isbn');
@@ -98,9 +65,12 @@ class BookController extends AbstractController
             'title' => 'result',
             'description' => 'result for search'
         ];
-        return $this->render('search.twig', $properties);
+        return $this->render('book/book-search.twig', $properties);
     }
 
+    /**
+     * @return string
+     */
     private function renderErr()
     {
         $properties = ['errorMessage' => '404'];

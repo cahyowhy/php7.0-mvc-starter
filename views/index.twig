@@ -15,14 +15,14 @@
                 </p>
             </div>
         </section>
-        {% if hasLogin %}
-            <add-book-widget></add-book-widget>
-        {% else %}
-            <div class="notification is-info">
-                <button class="delete"></button>
-                <strong>Masuk sebagai admin </strong> terlebih dahulu untuk menambah data buku
-            </div>
-        {% endif %}
+        {#{% if hasLogin %}#}
+            {#<add-book-widget></add-book-widget>#}
+        {#{% else %}#}
+            {#<div class="notification is-info">#}
+                {#<button class="delete"></button>#}
+                {#<strong>Masuk sebagai admin </strong> terlebih dahulu untuk menambah data buku#}
+            {#</div>#}
+        {#{% endif %}#}
         <search-book-widget></search-book-widget>
         <div class="columns">
             {% if books %}

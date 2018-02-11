@@ -1,5 +1,5 @@
 <template>
-    <admin-auth-form btn-title='Login' @action='doSave'/>
+    <admin-auth-form btn-title='Login' :isCustomer="true" @action='doSave'/>
 </template>
 
 <script>
@@ -8,10 +8,10 @@
     import _ from 'lodash';
 
     export default {
-        name: "admin-register",
+        name: "customer-register",
         methods: {
             async doSave(param) {
-                const {data} = await new baseServices('/api/admin/validate').save(_.pickBy(param));
+                const {data} = await new baseServices('/api/customer/validate').save(_.pickBy(param));
                 if (data && commonServices.setToken(data['token']))
                     window.location = '/';
             }

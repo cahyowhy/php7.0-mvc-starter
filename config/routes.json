@@ -1,41 +1,65 @@
 {
+  "": {
+    "concern": "WEB",
+    "controller": "Home",
+    "method": "index"
+  },
   "book/:id": {
     "controller": "Book",
     "method": "show",
+    "concern": "WEB",
     "params": {
       "id": "number"
     }
   },
-  "admin": {
-    "controller": "Admin",
-    "method": "index"
-  },
   "admin/login": {
+    "concern": "WEB",
     "controller": "Admin",
     "method": "doLogin"
   },
-  "admin/create":{
+  "admin/register": {
     "controller": "Admin",
-    "method": "create"
+    "concern": "WEB",
+    "method": "doRegister"
   },
-  "admin/validate":{
-    "controller": "Admin",
-    "method": "validate"
+  "customer/login": {
+    "concern": "WEB",
+    "controller": "Customer",
+    "method": "doLogin"
   },
-  "admin/register":{
-    "controller": "Admin",
+  "customer/register": {
+    "controller": "Customer",
+    "concern": "WEB",
     "method": "doRegister"
   },
   "search/book": {
+    "concern": "WEB",
     "controller": "Book",
     "method": "search"
   },
-  "add/book": {
-    "controller": "Book",
+  "api/admin/create": {
+    "concern": "API",
+    "controller": "Admin",
     "method": "create"
   },
-  "": {
-    "controller": "Home",
-    "method": "index"
+  "api/admin/validate": {
+    "concern": "API",
+    "controller": "Admin",
+    "method": "validate"
+  },
+  "api/customer/create": {
+    "concern": "API",
+    "controller": "Customer",
+    "method": "create"
+  },
+  "api/customer/validate": {
+    "concern": "API",
+    "controller": "Customer",
+    "method": "validate"
+  },
+  "api/book/create": {
+    "concern": "API",
+    "controller": "Book",
+    "method": "create"
   }
 }

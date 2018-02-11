@@ -11,10 +11,12 @@ namespace Bookstore\Model;
 
 class Customer
 {
-    private $id;
-    private $firstname;
-    private $surname;
-    private $email;
+    private $id = 0;
+    private $firstname = '';
+    private $surname = '';
+    private $email = '';
+    private $password = '';
+    private $type = 'BASIC';
 
     public function getId(): int
     {
@@ -54,5 +56,25 @@ class Customer
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type)
+    {
+        $this->type = $type;
     }
 }

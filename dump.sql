@@ -27,8 +27,6 @@ CREATE TABLE IF NOT EXISTS `admin` (
 
 -- Dumping data for table bookstore.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-	(16, 'admin14', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImFkbWluIg.Yb9fIrMj3aohT7pWHfEAbp6USF14olJrwLlpLcIxIGI');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Dumping structure for table bookstore.book
@@ -42,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `isbn` (`isbn`),
   KEY `title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table bookstore.book: ~18 rows (approximately)
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
@@ -92,16 +90,18 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `firstname` varchar(255) NOT NULL,
   `surname` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `type` enum('basic','premium') DEFAULT NULL,
+  `type` enum('BASIC','PREMIUM') DEFAULT 'BASIC',
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table bookstore.customer: ~2 rows (approximately)
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` (`id`, `firstname`, `surname`, `email`, `type`) VALUES
-	(1, 'Han', 'Solo', 'han@tatooine.com', 'premium'),
-	(2, 'James', 'Kirk', 'enter@prise', 'basic');
+INSERT INTO `customer` (`id`, `firstname`, `surname`, `email`, `type`, `password`) VALUES
+	(1, 'Han', 'Solo', 'han@tatooine.com', 'PREMIUM', NULL),
+	(2, 'James', 'Kirk', 'enter@prise', 'BASIC', NULL),
+	(3, 'samantha', 'jaka', 'smajake_mail.com', 'PREMIUM', '');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 
 -- Dumping structure for table bookstore.sale

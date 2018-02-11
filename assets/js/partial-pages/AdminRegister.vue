@@ -10,7 +10,7 @@
         name: "admin-register",
         methods: {
             async doSave(param) {
-                const {data} = await new baseServices('/admin/create').save(_.pickBy(param));
+                const {data} = await new baseServices('/api/admin/create').save(_.pickBy(param));
                 if (data)
                     window.location = '/admin/login';
             }

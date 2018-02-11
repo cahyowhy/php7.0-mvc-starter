@@ -2,33 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: cahyo
- * Date: 2/5/18
- * Time: 3:45 PM
+ * Date: 2/11/18
+ * Time: 3:32 PM
  */
 
-namespace Bookstore\Controllers;
+namespace Bookstore\Controllers\API;
 
-
-use Bookstore\Exceptions\InvalidIdException;
+use Bookstore\Exceptions\ParamEmptyException;
 use Bookstore\Model\Admin;
 use Bookstore\Repository\AdminRepository;
-use Bookstore\Repository\BookRepository;
-use Bookstore\Utils\JWT;
+use Bookstore\Controllers\AbstractController;
 
 class AdminController extends AbstractController
 {
-    public function doLogin(): string
-    {
-        $properties = [];
-        return $this->render('admin/login.twig', $properties);
-    }
-
-    public function doRegister(): string
-    {
-        $properties = [];
-        return $this->render('admin/register.twig', $properties);
-    }
-
+    /**
+     * @return string
+     * @throws ParamEmptyException
+     * @throws \Bookstore\Exceptions\DbException
+     * @throws \Bookstore\Exceptions\InvalidIdException
+     */
     public function create(): string
     {
         header('Content-type: application/json');
@@ -37,9 +29,8 @@ class AdminController extends AbstractController
         $username = $adminBody['username'];
         $password = $adminBody['password'];
 
-        if (empty($username) || empty($password)) {
-            throw new InvalidIdException('some val are empty');
-        }
+        if (empty($username) || empty($password))
+            throw new ParamEmptyException();
 
         $admin = new Admin();
         $admin->setPassword($password);
@@ -51,6 +42,11 @@ class AdminController extends AbstractController
         return json_encode($token);
     }
 
+    /**
+     * @return string
+     * @throws ParamEmptyException
+     * @throws \Bookstore\Exceptions\NotFoundException
+     */
     public function validate(): string
     {
         header('Content-type: application/json');
@@ -59,9 +55,8 @@ class AdminController extends AbstractController
         $username = $adminBody['username'];
         $password = $adminBody['password'];
 
-        if (empty($username) || empty($password)) {
-            throw new InvalidIdException('some val are empty');
-        }
+        if (empty($username) || empty($password))
+            throw new ParamEmptyException();
 
         $admin = new Admin();
         $admin->setPassword($password);

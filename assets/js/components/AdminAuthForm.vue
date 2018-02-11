@@ -2,13 +2,15 @@
     <form>
         <div class="field">
             <div class="control">
-                <input v-model="username" class="input is-large" type="email" placeholder="Your Admin Username">
+                <input v-model="username" class="input is-large" type="email"
+                       :placeholder="isCustomer ? 'Fill with email':'Fill with username'">
             </div>
         </div>
 
         <div class="field">
             <div class="control">
-                <input v-model="password" class="input is-large" type="password" placeholder="Your Password">
+                <input v-model="password" class="input is-large" type="password"
+                       placeholder="Your Password">
             </div>
         </div>
         <div class="field">
@@ -30,6 +32,10 @@
             btnTitle: {
                 type: String,
                 default: ''
+            },
+            isCustomer: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -40,7 +46,11 @@
         },
         methods: {
             doSave() {
-                this.$emit('action', this.$data);
+                if (this.isCustomer) {
+                    this.$emit('action', {email: this.username, password: this.password});
+                } else {
+                    this.$emit('action', this.$data);
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 
 namespace Bookstore\Repository;
 
+use Bookstore\Exceptions\DbException;
 use Bookstore\Model\Book;
 use PDO;
 
@@ -9,6 +10,11 @@ class BookRepository extends BaseRepository
 {
     const CLASSNAME = '\Bookstore\Model\Book';
 
+    /**
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
     public function index(int $offset, int $limit): array
     {
         $query = 'SELECT * FROM book LIMIT :offset, :limit';
@@ -21,33 +27,39 @@ class BookRepository extends BaseRepository
         return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
     }
 
+    /**
+     * @param Book $book
+     * @return array
+     */
     public function find(Book $book): array
     {
         $query = 'SELECT * FROM book ';
-        $id = !empty($book->getId());
-        $isbn = !empty($book->getIsbn());
+        $hasId = !empty($book->getId());
+        $hasIsbn = !empty($book->getIsbn());
 
-        if ($id || $isbn) {
+        if ($hasId || $hasIsbn) {
             // https://stackoverflow.com/questions/5673269/what-is-the-advantage-of-using-heredoc-in-php
-            $query = 'SELECT book.*,
-customer.id AS cust_id,
-customer.firstname AS cust_name,
-customer.email AS cust_email
-FROM book
-LEFT JOIN borrowed_books
-ON book.id = borrowed_books.book_id
-LEFT JOIN customer
-ON customer.id = borrowed_books.customer_id ';
+            $query = <<<SQL
+          SELECT book.*,
+          customer.id AS cust_id,
+          customer.firstname AS cust_name,
+          customer.email AS cust_email
+          FROM book
+          LEFT JOIN borrowed_books
+          ON book.id = borrowed_books.book_id
+          LEFT JOIN customer
+          ON customer.id = borrowed_books.customer_id 
+SQL;
         }
 
-        if ($id) {
+        if ($hasId) {
             $query = $query . 'WHERE book.id = :id';
             $rows = $this->db->prepare($query);
             $rows->bindParam('id', $book->getId());
             $rows->execute();
 
             return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
-        } else if ($isbn) {
+        } else if ($hasIsbn) {
             $query = $query . 'WHERE isbn = :isbn';
 
             $rows = $this->db->prepare($query);
@@ -56,24 +68,24 @@ ON customer.id = borrowed_books.customer_id ';
 
             return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
         } else {
-            $author = !empty($book->getAuthor());
-            $title = !empty($book->getTitle());
-            if ($author || $title) {
+            $hasAuthor = !empty($book->getAuthor());
+            $hasTitle = !empty($book->getTitle());
+            if ($hasAuthor || $hasTitle) {
                 $query = $query . 'WHERE 1=1 ';
-                if ($author)
+                if ($hasAuthor)
                     $query = $query . 'AND author LIKE :author ';
 
-                if ($title)
+                if ($hasTitle)
                     $query = $query . 'AND title LIKE :title ';
 
                 $rows = $this->db->prepare($query);
 
-                if ($author) {
+                if ($hasAuthor) {
                     $param = "%" . $book->getAuthor() . "%";
                     $rows->bindParam('author', $param);
                 }
 
-                if ($title) {
+                if ($hasTitle) {
                     $param = "%" . $book->getTitle() . "%";
                     $rows->bindParam('title', $param);
                 }
@@ -86,6 +98,9 @@ ON customer.id = borrowed_books.customer_id ';
         }
     }
 
+    /**
+     * @return int
+     */
     public function count(): int
     {
         $query = 'SELECT count(*) as total from book';
@@ -96,10 +111,15 @@ ON customer.id = borrowed_books.customer_id ';
         return $results['total'];
     }
 
+    /**
+     * @param Book $book
+     * @return int
+     * @throws DbException
+     */
     public function create(Book $book): int
     {
         $query = 'INSERT INTO book (title, isbn, author, stock, price)
-VALUES (:title, :isbn, :author, :stock, :price);';
+        VALUES (:title, :isbn, :author, :stock, :price);';
 
         $sth = $this->db->prepare($query);
 

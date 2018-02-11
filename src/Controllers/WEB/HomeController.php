@@ -6,18 +6,22 @@
  * Time: 21:08
  */
 
-namespace Bookstore\Controllers;
+namespace Bookstore\Controllers\WEB;
 
 
+use Bookstore\Controllers\AbstractController;
 use Bookstore\Repository\BookRepository;
 
 class HomeController extends AbstractController
 {
     const PAGE_DEFAULT = 4;
 
+    /**
+     * @return string
+     */
     public function index(): string
     {
-        $offset  = $this->request->getParams()->getInt('offset');
+        $offset = $this->request->getParams()->getInt('offset');
         $real_offset = 0;
         $current_page = 1;
         if (!isset($offset) || $offset < 2) $offset = 0;
@@ -45,7 +49,6 @@ class HomeController extends AbstractController
             'pages' => $pages,
             'title' => 'Book my love :*',
             'description' => 'all this books is deserve loves ma lady, total book now is ' . $bookTotal,
-            'hasLogin' => !empty($_SESSION['admin']),
             'books' => $books
         ];
 

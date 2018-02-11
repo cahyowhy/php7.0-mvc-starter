@@ -44,7 +44,7 @@
         },
         methods: {
             async doSave() {
-                const base = new baseService('/add/book');
+                const base = new baseService('/api/book/create');
                 const {data} = await base.save(_.pickBy(this.$data));
                 if (data)
                     window.location = '/book/' + data.id;
