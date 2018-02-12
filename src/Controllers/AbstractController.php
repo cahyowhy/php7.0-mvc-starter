@@ -46,13 +46,13 @@ abstract class AbstractController
 
     /**
      * @param bool $isCustomer
-     * @throws UnauthorizeException
+     * @return bool
      */
     protected function validateAuthHeader($isCustomer = true)
     {
         $token = $this->request->getHeaders('Authorization');
         if (empty($token))
-            throw new UnauthorizeException();
+            return false;
 
         $decodedToken = self::authHeader($token, $this->log);
 
@@ -60,6 +60,8 @@ abstract class AbstractController
         $identifier = $isCustomer ? $decodedToken['email'] : $decodedToken['username'];
         $key = $isCustomer ? RedisKeyFormat::getCustomerRedisToken($identifier) : RedisKeyFormat::getAdminRedisToken($identifier);
         if (!$this->redist->exists($key) || $this->redist->hget($key, 'token') !== $token)
-            throw new UnauthorizeException();
+            return false;
+
+        return true;
     }
 }

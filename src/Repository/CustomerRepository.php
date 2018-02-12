@@ -80,7 +80,15 @@ SQL;
             $rows->execute();
 
             return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
-        } else {
+        } else if (!empty($email)){
+            $query = $query . 'WHERE customer.email = :email';
+            $rows = $this->db->prepare($query);
+            $rows->bindParam('email', $email);
+            $rows->execute();
+
+            return $rows->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+        }
+        else {
             return [];
         }
     }

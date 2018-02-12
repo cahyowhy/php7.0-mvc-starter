@@ -10,14 +10,23 @@ a[disabled] {
 
 .book-page {
   margin-top: 1rem;
-  .btn-borrow-wrp {
+  .btn-wrp {
     width: 100%;
+  }
+  .has-borrow, .borrow-book-component {
+    margin-top: 1.5rem;
   }
 }
 
 .book-page .columns {
   overflow: auto;
   display: block;
+}
+
+.borrow-book-component {
+  padding: 1.5rem;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
 }
 
 .customer-type {

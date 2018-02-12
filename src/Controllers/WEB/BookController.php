@@ -31,13 +31,14 @@ class BookController extends AbstractController
                 $customer->setFirstname($value->cust_name);
                 $customer->setEmail($value->cust_email);
 
-                array_push($customers, $customer);
+                array_push($customers, $customer->jsonSerialize());
             }
 
             $bookProperty->setCustomers($customers);
         }
 
-        $properties = ['book' => $bookProperty];
+        $properties = ['book' => json_encode($bookProperty->jsonSerialize()), 'id' => $bookId];
+
         return $this->render('book/book.twig', $properties);
     }
 

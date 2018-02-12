@@ -93,6 +93,11 @@ class CustomerController extends AbstractController
         $this->redist->hset($key, 'token', $token['token']);
         $this->redist->expire($key, time() + 7200);
 
-        return json_encode($token);
+        $customer->setPassword('');
+        $customerResult = $customerRepository->find($customer);
+        $customerResult = $customerResult[0]->jsonSerialize();
+        $customerResult['token'] = $token['token'];
+
+        return json_encode($customerResult);
     }
 }

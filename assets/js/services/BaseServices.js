@@ -5,6 +5,7 @@
 import Axios from 'axios'
 import getQueryParam from '../utils/getQueryParam';
 import lodash from 'lodash';
+import commonServices from './CommonServices';
 
 export default class {
     constructor(api) {
@@ -17,6 +18,10 @@ export default class {
             put: 'PUT',
             delete: 'DELETE'
         }
+
+        const user = commonServices.getUser();
+        if (!lodash.isNil(user['token']))
+            this.token = user['token'];
     }
 
     find(param = null, useAll = true) {

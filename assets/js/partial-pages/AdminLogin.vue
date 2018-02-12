@@ -1,4 +1,4 @@
-<template>
+\<template>
     <admin-auth-form btn-title='Login' @action='doSave'/>
 </template>
 

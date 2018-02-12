@@ -62,15 +62,13 @@ class BookController extends AbstractController
      * @return string
      * @throws InvalidIdException
      * @throws ParamEmptyException
+     * @throws UnauthorizeException
      */
     public function borrow(): string
     {
         header('Content-type: application/json');
-        try {
-            $this->validateAuthHeader();
-        } catch (UnauthorizeException $e) {
-            $this->log->error($e->getMessage());
-        }
+        if (!$this->validateAuthHeader())
+            throw new UnauthorizeException();
 
         $bookBorrowBody = json_decode($this->request->getBody(), true);
         $bookId = $bookBorrowBody['book_id'];
