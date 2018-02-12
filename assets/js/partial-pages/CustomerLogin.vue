@@ -12,8 +12,11 @@
         methods: {
             async doSave(param) {
                 const {data} = await new baseServices('/api/customer/validate').save(_.pickBy(param));
-                if (data && commonServices.setToken(data['token']))
+                if (data && commonServices.setToken(data['token']) && commonServices.setEmail(param['email'])) {
                     window.location = '/';
+                } else {
+                    commonServices.removeCookies();
+                }
             }
         }
     }

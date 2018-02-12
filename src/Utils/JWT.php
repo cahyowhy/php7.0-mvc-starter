@@ -8,6 +8,12 @@
  *
  * @author Neuman Vong <neuman@twilio.com>
  */
+
+namespace Bookstore\Utils;
+
+use UnexpectedValueException;
+use DomainException;
+
 class JWT
 {
     /**

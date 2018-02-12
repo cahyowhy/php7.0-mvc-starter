@@ -10,11 +10,22 @@ a[disabled] {
 
 .book-page {
   margin-top: 1rem;
+  .btn-borrow-wrp {
+    width: 100%;
+  }
 }
 
 .book-page .columns {
   overflow: auto;
   display: block;
+}
+
+.customer-type {
+  width: 100%;
+  margin: .75rem 0;
+  select {
+    width: 100%;
+  }
 }
 
 @mixin default_widget_rule {
@@ -82,7 +93,7 @@ a[disabled] {
   input {
     font-weight: 300;
   }
-  input.submit{
+  input.submit {
     width: 100% !important;
   }
   p {

@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table bookstore.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   KEY `title` (`title`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table bookstore.book: ~18 rows (approximately)
+-- Dumping data for table bookstore.book: ~19 rows (approximately)
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
 INSERT INTO `book` (`id`, `isbn`, `title`, `author`, `stock`, `price`) VALUES
 	(1, '9780882339726', '1984', 'George Orwell', 12, 7.5),
@@ -72,16 +72,18 @@ CREATE TABLE IF NOT EXISTS `borrowed_books` (
   `customer_id` int(10) unsigned NOT NULL,
   `start` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `end` datetime DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
   KEY `book_id` (`book_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `borrowed_books_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
   CONSTRAINT `borrowed_books_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table bookstore.borrowed_books: ~0 rows (approximately)
+-- Dumping data for table bookstore.borrowed_books: ~1 rows (approximately)
 /*!40000 ALTER TABLE `borrowed_books` DISABLE KEYS */;
-INSERT INTO `borrowed_books` (`book_id`, `customer_id`, `start`, `end`) VALUES
-	(1, 2, '2018-02-02 19:31:14', '2018-12-01 00:00:00');
+INSERT INTO `borrowed_books` (`book_id`, `customer_id`, `start`, `end`, `id`) VALUES
+	(1, 2, '2018-02-02 19:31:14', '2018-12-01 00:00:00', 1);
 /*!40000 ALTER TABLE `borrowed_books` ENABLE KEYS */;
 
 -- Dumping structure for table bookstore.customer
@@ -96,12 +98,12 @@ CREATE TABLE IF NOT EXISTS `customer` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table bookstore.customer: ~2 rows (approximately)
+-- Dumping data for table bookstore.customer: ~3 rows (approximately)
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 INSERT INTO `customer` (`id`, `firstname`, `surname`, `email`, `type`, `password`) VALUES
 	(1, 'Han', 'Solo', 'han@tatooine.com', 'PREMIUM', NULL),
 	(2, 'James', 'Kirk', 'enter@prise', 'BASIC', NULL),
-	(3, 'samantha', 'jaka', 'smajake_mail.com', 'PREMIUM', '');
+	(3, 'sana', 'nana', 'nanamail@mail.com', 'BASIC', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IjEyMzQ1Ig.9W2V4_h-7SnLrDtNlIX9NyugTchEzz9WLRPHVgGM0x4');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 
 -- Dumping structure for table bookstore.sale

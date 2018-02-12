@@ -2,7 +2,8 @@
 
 namespace Bookstore\Core;
 
-class Request {
+class Request
+{
     const GET = 'GET';
     const POST = 'POST';
 
@@ -13,7 +14,8 @@ class Request {
     private $cookies;
     private $body;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->domain = $_SERVER['HTTP_HOST'];
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
         $this->method = $_SERVER['REQUEST_METHOD'];
@@ -27,35 +29,53 @@ class Request {
         return $this->body;
     }
 
-    public function getUrl(): string {
+    public function getUrl(): string
+    {
         return $this->domain . $this->path;
     }
 
-    public function getDomain(): string {
+    public function getDomain(): string
+    {
         return $this->domain;
     }
 
-    public function getPath(): string {
+    public function getPath(): string
+    {
         return $this->path;
     }
 
-    public function getMethod(): string {
+    public function getMethod(): string
+    {
         return $this->method;
     }
 
-    public function isPost(): bool {
+    public function isPost(): bool
+    {
         return $this->method === self::POST;
     }
 
-    public function isGet(): bool {
+    public function isGet(): bool
+    {
         return $this->method === self::GET;
     }
 
-    public function getParams(): FilteredMap {
+    public function getParams(): FilteredMap
+    {
         return $this->params;
     }
 
-    public function getCookies(): FilteredMap {
+    public function getCookies(): FilteredMap
+    {
         return $this->cookies;
+    }
+
+    public function getHeaders($headerKey): string
+    {
+        $test = getallheaders();
+        if (array_key_exists($headerKey, $test)) {
+            return $test[$headerKey];
+        } else {
+            return '';
+        }
     }
 }

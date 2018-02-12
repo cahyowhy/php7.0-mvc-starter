@@ -3,11 +3,13 @@
  */
 
 import Axios from 'axios'
+import getQueryParam from '../utils/getQueryParam';
+import lodash from 'lodash';
 
 export default class {
     constructor(api) {
-        this.api = api
-        this.token = null
+        this.api = api;
+        this.token = null;
 
         this.method = {
             get: 'GET',
@@ -17,25 +19,26 @@ export default class {
         }
     }
 
-    find(param = null) {
-        if (param !== null) {
-            let url = `${this.api}`
+    find(param = null, useAll = true) {
+        let url = `${this.api}`;
+
+        if (!lodash.isNil(param) || useAll) {
             if (typeof param === 'object') {
-                let query = '?'
-                url = url + vueInstane.$getQueryParam(query, param)
+                let query = '?';
+                url = url + getQueryParam(query, param)
             } else if (typeof param === 'string' || typeof param === 'number') {
                 url = `${url}/${param}`
             } else {
                 url = `${url}?all=1`
             }
-
-            return this.service(this.method.get, url)
         }
+
+        return this.service(this.method.get, url)
     }
 
     save(body, param = null) {
-        let api = this.api
-        if (param !== null) api = `${api}/${param}`
+        let api = this.api;
+        if (param !== null) api = `${api}/${param}`;
         return this.service(this.method.post, api, body)
     }
 

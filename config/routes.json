@@ -52,10 +52,20 @@
     "controller": "Customer",
     "method": "create"
   },
+  "api/customer/show-types": {
+    "concern": "API",
+    "controller": "Customer",
+    "method": "showTypes"
+  },
   "api/customer/validate": {
     "concern": "API",
     "controller": "Customer",
     "method": "validate"
+  },
+  "api/book/borrow": {
+    "concern": "API",
+    "controller": "Book",
+    "method": "borrow"
   },
   "api/book/create": {
     "concern": "API",

@@ -12,14 +12,15 @@ use Bookstore\Exceptions\DbException;
 use Bookstore\Exceptions\InvalidIdException;
 use Bookstore\Exceptions\NotFoundException;
 use Bookstore\Model\Admin;
-use JWT;
+use Bookstore\Utils\GenerateToken;
+use Bookstore\Utils\JWT;
 use PDO;
 
 class AdminRepository extends BaseRepository
 {
     const CLASSNAME = '\Bookstore\Model\Admin';
 
-    use \GenerateToken;
+    use GenerateToken;
 
     /**
      * @param Admin $admin

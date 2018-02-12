@@ -5,13 +5,14 @@ namespace Bookstore\Repository;
 use Bookstore\Exceptions\DbException;
 use Bookstore\Exceptions\InvalidIdException;
 use Bookstore\Model\Customer;
+use Bookstore\Utils\GenerateToken;
 use PDO;
-use JWT;
+use Bookstore\Utils\JWT;
 
 class CustomerRepository extends BaseRepository
 {
     const CLASSNAME = '\Bookstore\Model\Customer';
-    use \GenerateToken;
+    use GenerateToken;
 
     /**
      * @param Customer $customer
@@ -53,6 +54,10 @@ SQL;
         return self::generateToken(true, null, $customer);
     }
 
+    /**
+     * @param Customer $customer
+     * @return array
+     */
     public function find(Customer $customer): array
     {
         $query = 'SELECT * FROM customer ';
@@ -78,5 +83,44 @@ SQL;
         } else {
             return [];
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function showLabel(): array
+    {
+        $query = <<<SQL
+        SHOW COLUMNS FROM customer LIKE '%type'
+SQL;
+        $rows = $this->db->prepare($query);
+        $rows->execute();
+
+        $results = $rows->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $results = $results[0]['Type'];
+            $beginStr = strpos($results, "(") + 1;
+            $endStr = strpos($results, ")");
+            $results = substr($results, $beginStr, $endStr - $beginStr);
+            $results = str_replace("'", "", $results);
+
+            return explode(',', $results);
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * @param Customer $customer
+     * @return array
+     */
+    public function validate(Customer $customer): array
+    {
+        $customer = $this->find($customer);
+        if (empty($customer) && !is_array($customer))
+            throw new NotFoundException('email or password wrong');
+
+        $customer = $customer[0];
+        return self::generateToken(true, null, $customer);
     }
 }

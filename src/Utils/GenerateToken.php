@@ -1,5 +1,7 @@
 <?php
 
+namespace Bookstore\Utils;
+
 use Bookstore\Model\Admin;
 use Bookstore\Model\Customer;
 
@@ -10,6 +12,8 @@ trait GenerateToken
      * @param bool $isCustomer
      * @param Admin $admin
      * @param Customer $customer
+     *
+     * @return array
      */
     public function generateToken($isCustomer = true, Admin $admin = null, Customer $customer = null): array
     {
